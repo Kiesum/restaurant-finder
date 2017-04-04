@@ -1,24 +1,42 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
+function RestaurantList(props) {
+  const restaurants = props.restaurantItems;
+  const restaurantItems = restaurants.map((restaurant) =>
+    <li>
+      <img src={restaurant.image_url} />  
+      <a href={restaurant.url}><h2>{restaurant.name}</h2></a>
+      <span>{restaurant.rating}</span>
+      <span>{restaurant.review_count}</span>
+      <span>{restaurant.price}</span>
+    </li>
+  );
+  return (
+    <ul>{restaurantItems}</ul>
+  )
+}
+
 export default class Restaurants extends Component {
+  constructor(props) {
+    super(props)
 
-  getRestaurants() {
-    axios.get('https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=49.246292&longitude=-123.116226&radius=1000', {
-      headers: { Authorization: 'Bearer bMY2yIMUnKvctqwOUfWHMNY5NizpViecWCATNXC86FdsCipcXl05EOJWZp4MMOw3pV-lkoE-sIj-b4GsSUMnQXFvpsZ-B1-dHCuop0RLBLc3WxisMPQeHXhUPjnjWHYx' }
-    })
+    this.state = { restaurants: [] }
+  }
+
+  componentDidMount() {
+    axios.get('/api/yelp')
       .then(function(response){
-        console.log(response.data); // ex.: { user: 'Your User'}
-        console.log(response.status); // ex.: 200
-      });  
-
+        console.log(response);
+        const restaurants = response.data.businesses;
+        this.setState({ restaurants: restaurants })
+      }.bind(this));  
   }
 
   render () {
     return (
       <div>
-        <button onClick={this.getRestaurants.bind(this)}>get rest</button>
-        Restaurants
+        <RestaurantList restaurantItems={this.state.restaurants} />
       </div>
     )
   }
