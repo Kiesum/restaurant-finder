@@ -25,12 +25,40 @@ export default class Restaurants extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/yelp')
+    this.getLocation()
+  }
+
+  getRestaurants(position) {
+    axios.post('/api/yelp', {
+      position: position
+    })
       .then(function(response){
-        console.log(response);
         const restaurants = response.data.businesses;
         this.setState({ restaurants: restaurants })
-      }.bind(this));  
+      }.bind(this)); 
+  }
+
+  getLocation() {
+    var self = this;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+      console.log(pos)
+      self.getRestaurants(pos);
+      }, function() {
+        handleLocationError(true);
+      });
+    } else {
+      handleLocationError(false);
+    }
+
+    function handleLocationError(browserHasGeolocation) {
+      browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.';
+    }
+
   }
 
   render () {
