@@ -4,6 +4,7 @@ import firebase from 'firebase'
 
 
 function setErrorMsg(error) {
+  console.log(error)
   return {
     registerError: error.message
   }
@@ -13,9 +14,14 @@ export default class Register extends Component {
   state = { registerError: null }
   handleSubmit(e) {
     e.preventDefault()
-    auth(this.email.value, this.pw.value, this.name.value)
-      .catch(e => this.setState(setErrorMsg(e)))
+    if (this.cpw.value === this.pw.value) {
+      auth(this.email.value, this.pw.value, this.name.value)
+        .catch(e => this.setState(setErrorMsg(e)))
+    } else {
+      this.setState(setErrorMsg({ message: 'Passwords do not match.' }));
+    }
   }
+  
   handleSignIn() {
     var provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function(result) {
@@ -56,6 +62,10 @@ export default class Register extends Component {
           <div className="form-group">
             <label>Password</label>
             <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+          </div>
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input type="password" className="form-control" placeholder="Confirm Password" ref={(cpw) => this.cpw = cpw} />
           </div>
           {
             this.state.registerError &&
