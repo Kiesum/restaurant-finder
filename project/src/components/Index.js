@@ -7,6 +7,7 @@ import Home from './Home'
 import Dashboard from './protected/Dashboard'
 import { logout } from '../helpers/auth'
 import { firebaseAuth } from '../config/constants'
+import Profile from './Profile'
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -71,12 +72,13 @@ export default class App extends Component {
                 </li>
                 <li>
                   {this.state.authed
-                    ? <button
+                    ? <span><button
                         style={{border: 'none', background: 'transparent'}}
                         onClick={() => {
                           logout()
                         }}
                         className="navbar-brand">Logout</button>
+                        <Profile /></span>
                     : <span>
                         <Link to="/login" className="navbar-brand">Login</Link>
                         <Link to="/register" className="navbar-brand">Register</Link>

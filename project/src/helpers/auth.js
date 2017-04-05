@@ -1,8 +1,13 @@
 import { ref, firebaseAuth } from '../config/constants'
 
-export function auth (email, pw) {
+export function auth (email, pw, displayName) {
+  var displayName = displayName;
   return firebaseAuth().createUserWithEmailAndPassword(email, pw)
-    .then(saveUser)
+    .then(function(user){
+      user.updateProfile({
+        displayName: displayName
+    });
+  }).then(saveUser);
 }
 
 export function logout () {
@@ -21,8 +26,9 @@ export function saveUser (user) {
   return ref.child(`users/${user.uid}/info`)
     .set({
       email: user.email,
+      displayName: user.displayName,
       uid: user.uid,
-      favorites: 'sample'
+      favorites: '',
     })
     .then(() => user)
 }

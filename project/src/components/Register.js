@@ -13,7 +13,7 @@ export default class Register extends Component {
   state = { registerError: null }
   handleSubmit(e) {
     e.preventDefault()
-    auth(this.email.value, this.pw.value)
+    auth(this.email.value, this.pw.value, this.name.value)
       .catch(e => this.setState(setErrorMsg(e)))
   }
   handleSignIn() {
@@ -45,6 +45,10 @@ export default class Register extends Component {
         <h1>Register</h1>
         <button onClick={this.handleSignIn.bind(this)}>facebook</button>
         <form onSubmit={this.handleSubmit.bind(this)}>
+          <div className="form-group">
+            <label>Name</label>
+            <input className="form-control" ref={(name) => this.name = name} placeholder="Name"/>
+          </div>
           <div className="form-group">
             <label>Email</label>
             <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>

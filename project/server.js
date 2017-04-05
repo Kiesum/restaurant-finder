@@ -25,7 +25,7 @@ var request = require('request');
 
 function options(lat, lng) {
   return {
-    url: 'https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=' + lat + '&longitude=' + lng + '&radius=10000',
+    url: 'https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=' + lat + '&longitude=' + lng + '&radius=10000&limit=50',
     headers: {
       Authorization: 'Bearer bMY2yIMUnKvctqwOUfWHMNY5NizpViecWCATNXC86FdsCipcXl05EOJWZp4MMOw3pV-lkoE-sIj-b4GsSUMnQXFvpsZ-B1-dHCuop0RLBLc3WxisMPQeHXhUPjnjWHYx'
     }
