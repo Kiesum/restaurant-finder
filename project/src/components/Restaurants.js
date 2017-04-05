@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { ref } from '../config/constants'
-import FavoriteButton from './FavoriteButton'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import AddRemoveButton from './AddRemoveButton'
 import Favorites from './Favorites'
+
 
 function RestaurantList(props) {
   const restaurants = props.restaurantItems;
@@ -13,7 +15,7 @@ function RestaurantList(props) {
       <span>{restaurant.rating}</span>
       <span>{restaurant.review_count}</span>
       <span>{restaurant.price}</span>
-      <FavoriteButton restaurant={restaurant} />
+      <AddRemoveButton restaurant={restaurant} />
     </li>
   );
   return (
@@ -39,6 +41,7 @@ export default class Restaurants extends Component {
       .then(function(response){
         const restaurants = response.data.businesses;
         this.setState({ restaurants: restaurants })
+            console.log(this.state)
       }.bind(this)); 
   }
 
@@ -64,22 +67,22 @@ export default class Restaurants extends Component {
 
   }
 
-  addEntry() {
-    var postsRef = ref.child("posts");
-
-    var newPostRef = postsRef.push();
-    newPostRef.set({
-      author: "gracehop",
-      title: "Announcing COBOL, a New Programming Language"
-    });
-  }
-
   render () {
     return (
-      <div>
-        <RestaurantList restaurantItems={this.state.restaurants} />
-        <Favorites />
-      </div>
+      <Tabs
+        onSelect={this.handleSelect}
+      >
+        <TabList>
+          <Tab>Restaurants</Tab>
+          <Tab>Favorites</Tab>
+        </TabList>
+        <TabPanel>
+          <RestaurantList restaurantItems={this.state.restaurants} />
+        </TabPanel>
+        <TabPanel>
+          <Favorites />
+        </TabPanel>
+      </Tabs>
     )
   }
 }
