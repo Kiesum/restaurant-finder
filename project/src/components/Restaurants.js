@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { ref } from '../config/constants'
+import FavoriteButton from './FavoriteButton'
+import Favorites from './Favorites'
 
 function RestaurantList(props) {
   const restaurants = props.restaurantItems;
@@ -10,6 +13,7 @@ function RestaurantList(props) {
       <span>{restaurant.rating}</span>
       <span>{restaurant.review_count}</span>
       <span>{restaurant.price}</span>
+      <FavoriteButton restaurant={restaurant} />
     </li>
   );
   return (
@@ -46,7 +50,6 @@ export default class Restaurants extends Component {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-      console.log(pos)
       self.getRestaurants(pos);
       }, function() {
         handleLocationError(true);
@@ -61,10 +64,21 @@ export default class Restaurants extends Component {
 
   }
 
+  addEntry() {
+    var postsRef = ref.child("posts");
+
+    var newPostRef = postsRef.push();
+    newPostRef.set({
+      author: "gracehop",
+      title: "Announcing COBOL, a New Programming Language"
+    });
+  }
+
   render () {
     return (
       <div>
         <RestaurantList restaurantItems={this.state.restaurants} />
+        <Favorites />
       </div>
     )
   }

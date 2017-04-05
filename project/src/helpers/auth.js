@@ -18,11 +18,11 @@ export function resetPassword (email) {
 }
 
 export function saveUser (user) {
-  console.log('hello')
   return ref.child(`users/${user.uid}/info`)
     .set({
       email: user.email,
-      uid: user.uid
+      uid: user.uid,
+      favorites: 'sample'
     })
     .then(() => user)
 }
