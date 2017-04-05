@@ -4,7 +4,6 @@ import firebase from 'firebase'
 
 
 function setErrorMsg(error) {
-  console.log(error)
   return {
     registerError: error.message
   }
@@ -21,7 +20,7 @@ export default class Register extends Component {
       this.setState(setErrorMsg({ message: 'Passwords do not match.' }));
     }
   }
-  
+
   handleSignIn() {
     var provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function(result) {

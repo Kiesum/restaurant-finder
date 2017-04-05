@@ -1,21 +1,102 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import Restaurants from './components/Restaurants'
+import React, { Component } from 'react'
+import 'bootstrap/dist/css/bootstrap.css'
+import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom'
+import Login from './components/Login'
+import Register from './components/Register'
+import Home from './components/Home'
+import { logout } from './helpers/auth'
+import { firebaseAuth } from './config/constants'
+import Profile from './components/Profile'
 import './App.css';
 
-class App extends Component {
+function PrivateRoute ({component: Component, authed, ...rest}) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => authed === true
+        ? <Component {...props} />
+        : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
+    />
+  )
+}
+
+function PublicRoute ({component: Component, authed, ...rest}) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => authed === false
+        ? <Component {...props} />
+        : <Redirect to='/' />}
+    />
+  )
+}
+
+export default class App extends Component {
+  state = {
+    authed: false,
+    loading: true,
+  }
+  componentDidMount () {
+    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({
+          authed: true,
+          loading: false,
+        })
+      } else {
+        this.setState({
+          authed: false,
+          loading: false
+        })
+      }
+    })
+  }
+  componentWillUnmount () {
+    this.removeListener()
+  }
   render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+    return this.state.loading === true ? <h1>Loading</h1> : (
+      <BrowserRouter>
+        <div>
+          <nav className="navbar navbar-default navbar-static-top">
+            <div className="container">
+              <div className="navbar-header">
+                <Link to="/" className="navbar-brand">Restaurant Finder</Link>
+              </div>
+              <ul className="nav navbar-nav pull-right">
+                <li>
+                  <Link to="/" className="navbar-brand">Home</Link>
+                </li>
+                <li>
+                  {this.state.authed
+                    ? <span><button
+                        style={{border: 'none', background: 'transparent'}}
+                        onClick={() => {
+                          logout()
+                        }}
+                        className="navbar-brand">Logout</button>
+                        <Profile /></span>
+                    : <span>
+                        <Link to="/login" className="navbar-brand">Login</Link>
+                        <Link to="/register" className="navbar-brand">Register</Link>
+                      </span>}
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <div className="container">
+            <div className="row">
+              <Switch>
+                <PrivateRoute authed={this.state.authed} path='/' exact component={Home} />
+                <PublicRoute authed={this.state.authed} path='/login' component={Login} />
+                <PublicRoute authed={this.state.authed} path='/register' component={Register} />
+                <Route render={() => <h3>No Match</h3>} />
+              </Switch>
+            </div>
+          </div>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      </BrowserRouter>
     );
   }
 }
-
-export default App;

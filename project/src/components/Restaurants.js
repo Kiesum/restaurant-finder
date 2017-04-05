@@ -23,11 +23,20 @@ function RestaurantList(props) {
   )
 }
 
+function setErrorMsg(error) {
+  return {
+    geolocationError: error.message,
+    isLoading: false
+  }
+}
+
 export default class Restaurants extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { restaurants: [] }
+    this.state = { restaurants: [],
+                    isLoading: true,
+                    geolocationError: null }
   }
 
   componentDidMount() {
@@ -39,9 +48,9 @@ export default class Restaurants extends Component {
       position: position
     })
       .then(function(response){
+        this.setState({ isLoading: false })
         const restaurants = response.data.businesses;
         this.setState({ restaurants: restaurants })
-            console.log(this.state)
       }.bind(this)); 
   }
 
@@ -62,9 +71,8 @@ export default class Restaurants extends Component {
     }
 
     function handleLocationError(browserHasGeolocation) {
-      browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.';
+      browserHasGeolocation ? self.setState(setErrorMsg({ message: 'Error: The Geolocation service failed.' })) : self.setState(setErrorMsg({ message: 'Error: Your browser doesn\'t support geolocation.' }));
     }
-
   }
 
   render () {
@@ -77,7 +85,15 @@ export default class Restaurants extends Component {
           <Tab>Favorites</Tab>
         </TabList>
         <TabPanel>
+          { this.state.isLoading ? <div className="loader-container"><div className="loader"></div><p>Loading restaurants near you</p></div> : null }
           <RestaurantList restaurantItems={this.state.restaurants} />
+          {
+            this.state.geolocationError &&
+            <div className="alert alert-danger" role="alert">
+              <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              &nbsp;{this.state.geolocationError}
+            </div>
+          }
         </TabPanel>
         <TabPanel>
           <Favorites />

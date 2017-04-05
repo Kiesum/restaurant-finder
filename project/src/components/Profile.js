@@ -19,10 +19,10 @@ export default class Profile extends Component {
 
   render () {
     return (
-      <li>
+      <div>
         <img src={this.state.profile_url} />
         <span>Welcome {this.state.displayName}</span>
-      </li>
+      </div>
     )
   }
 }
