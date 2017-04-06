@@ -35,8 +35,6 @@ function options(lat, lng) {
 app.post('/api/yelp', function(req, res) {
   lat = req.body['position']['lat'];
   lng = req.body['position']['lng'];
-  console.log(lat)
-  console.log(lng)
   request(options(lat, lng), function(error, response, body) {
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);

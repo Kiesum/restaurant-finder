@@ -5,26 +5,11 @@ import RemoveButton from './RemoveButton'
 import AddRemoveButton from './AddRemoveButton'
 import RestaurantInfo from './RestaurantInfo'
 
-function FavoritesList(props) {
-  const favorites =  props.favorites;
-  const favoriteItems = favorites.map((favorite) =>
-    <li>
-      <img src={favorite.image_url} />
-      <a href={favorite.restaurant_url}><h2>{favorite.name}</h2></a>
-      <p>{ favorite.price }</p>
-      <AddRemoveButton restaurant={favorite} />
-    </li>
-  );
-  return (
-    <ul>{ favoriteItems }</ul>
-  )
-}
-
 export default class Restaurants extends Component {
 
   constructor(props) {
       super(props)
-
+      
       this.state = { favorites: [] }
   }
 

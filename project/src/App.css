@@ -2,10 +2,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.navbar-brand, h2 {
-  font-family: Futura, sans-serif;
-}
-
 .App {
   text-align: center;
 }
@@ -76,4 +72,5 @@ body {
   width: 180px;
   left: -140px;
 }
+
 

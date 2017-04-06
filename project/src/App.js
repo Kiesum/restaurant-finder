@@ -9,7 +9,7 @@ import { logout } from './helpers/auth'
 import { firebaseAuth } from './config/constants'
 import Profile from './components/Profile'
 import './App.css'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
+import { DropdownButton, MenuItem, Grid, Row } from 'react-bootstrap'
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -44,6 +44,7 @@ export default class App extends Component {
         this.setState({
           authed: true,
           loading: false,
+          displayName: user.displayName
         })
       } else {
         this.setState({
@@ -61,7 +62,7 @@ export default class App extends Component {
       <BrowserRouter>
         <div>
           <nav style={styles.nav}>
-            <div className="container">
+            <Row style={styles.row}>
               <div>
                 <Link to="/" style={styles.logo} className="navbar-brand">Restaurant Finder</Link>
               </div>
@@ -69,7 +70,7 @@ export default class App extends Component {
                 <li>
                   {this.state.authed
                     ? <div>
-                         <DropdownButton style={styles.dropDown} title="K" noCaret id="bg-vertical-dropdown-2">
+                         <DropdownButton style={styles.dropDown} title={this.state.displayName.charAt(0)} noCaret id="bg-vertical-dropdown-2">
                             <Profile />
                             <button
                               style={styles.logoutButton}
@@ -84,9 +85,9 @@ export default class App extends Component {
                       </span>}
                 </li>
               </ul>
-            </div>
+            </Row>
           </nav>
-          <div className="container">
+          <div>
               <Switch>
                 <PrivateRoute authed={this.state.authed} path='/' exact component={Home} />
                 <PublicRoute authed={this.state.authed} path='/login' component={Login} />
@@ -102,11 +103,14 @@ export default class App extends Component {
 
 const styles = {
   nav: {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#3c3c3c",
     marginBottom: "30px"
   },
+  row: {
+    margin: "0 15px"
+  },
   logo: {
-    color: "#4485f5",
+    color: "#FFFFFF",
     fontSize: "20px",
     paddingLeft: "0",
     fontWeight: "bold"

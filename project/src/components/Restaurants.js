@@ -6,24 +6,6 @@ import AddRemoveButton from './AddRemoveButton'
 import Favorites from './Favorites'
 import RestaurantInfo from './RestaurantInfo'
 
-
-function RestaurantList(props) {
-  const items = props.items;
-  const allItems = items.map((item) =>
-    <li>
-      <img src={item.image_url} />  
-      <a href={item.url}><h2>{item.name}</h2></a>
-      <span>{item.rating}</span>
-      <span>{item.review_count}</span>
-      <span>{item.price}</span>
-      <AddRemoveButton restaurant={item} />
-    </li>
-  );
-  return (
-    <ul>{allItems}</ul>
-  )
-}
-
 function setErrorMsg(error) {
   return {
     geolocationError: error.message,
@@ -39,7 +21,7 @@ export default class Restaurants extends Component {
                     isLoading: true,
                     geolocationError: null }
   }
-
+  
   componentDidMount() {
     this.getLocation()
   }
