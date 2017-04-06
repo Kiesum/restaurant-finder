@@ -19,10 +19,24 @@ export default class Profile extends Component {
 
   render () {
     return (
-      <div>
-        <img src={this.state.profile_url} />
-        <span>Welcome {this.state.displayName}</span>
-      </div>
+      <span>
+        <img style={styles.img} src={this.state.profile_url} />
+        <span style={styles.name} >{this.state.displayName}</span>
+      </span>
     )
+  }
+}
+
+const styles={
+  img: {
+    width: "50px",
+    padding: "0.5rem"
+  },
+  name: {
+    display: "inline-block",
+    width: "100px",
+    marginLeft: "1rem",
+    verticalAlign: "middle",
+    fontSize: "12px"
   }
 }

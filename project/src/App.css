@@ -1,3 +1,11 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.navbar-brand, h2 {
+  font-family: Futura, sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -49,5 +57,23 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.react-tabs [role=tablist] {
+  border-bottom: none;
+}
+
+.react-tabs [role=tab] {
+  border: none;
+  border-bottom: 5px solid transparent;
+}
+
+.react-tabs [role=tab][aria-selected=true] {
+  border-color: #d54937;
+}
+
+.dropdown-menu {
+  width: 180px;
+  left: -140px;
 }
 

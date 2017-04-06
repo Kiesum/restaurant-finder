@@ -7,11 +7,14 @@ export default class AddRemoveButton extends Component {
     super(props) 
 
     this.state = {
-      addRemoveButton: 'favorite',
+      addRemoveButton: 'Add to favorites',
       key_id: '',
       name: props.restaurant.name,
       image_url: props.restaurant.image_url,
-      restaurant_url: props.restaurant.url,
+      url: props.restaurant.url,
+      price: props.restaurant.price,
+      review_count: props.restaurant.review_count,
+      rating: props.restaurant.rating
     }
   }
 
@@ -22,7 +25,7 @@ export default class AddRemoveButton extends Component {
       for (var key in snapshot.val()) {
         if (snapshot.val()[key]['name'] === self.state.name ) {
           self.setState({ key_id: key })
-          self.setState({ addRemoveButton: 'remove' })
+          self.setState({ addRemoveButton: 'Remove from favorites' })
         }
       }
     });
@@ -31,24 +34,27 @@ export default class AddRemoveButton extends Component {
   addRemove() {
     var self = this;
     var user = firebase.auth().currentUser;
-    if (user && self.state.addRemoveButton === 'favorite') {
+    if (user && self.state.addRemoveButton === 'Add to favorites') {
       var favoritesRef = ref.child('users').child(user.uid).child('info').child('favorites');
       var newFavoritesRef = favoritesRef.push({
         name: self.state.name,
         image_url: self.state.image_url,
-        restaurant_url: self.state.restaurant_url
+        url: self.state.url,
+        price: self.state.price,
+        review_count: self.state.review_count,
+        rating: self.state.rating
       }, function(err) {
           console.log(err)
       }).then(function() {
-        self.setState({ addRemoveButton: 'remove' })
+        self.setState({ addRemoveButton: 'Remove from favorites' })
       });
 
-    } else if (self.state.addRemoveButton === 'remove') {
+    } else if (self.state.addRemoveButton === 'Remove from favorites') {
         var user = firebase.auth().currentUser.uid;
         var adaRef = firebase.database().ref('/users/' + user + '/info/favorites/' + self.state.key_id);
         adaRef.remove()
       .then(function() {
-        self.setState({ addRemoveButton: 'favorite' })
+        self.setState({ addRemoveButton: 'Add to favorites' })
         console.log("Remove succeeded.")
       })
       .catch(function(error) {
@@ -59,7 +65,20 @@ export default class AddRemoveButton extends Component {
 
   render () {
     return (
-      <input type="button" onClick={this.addRemove.bind(this)} value={this.state.addRemoveButton}></input>
+      <input style={styles.button} type="button" onClick={this.addRemove.bind(this)} value={this.state.addRemoveButton}></input>
     )
   }
 }
+
+const styles = {
+  button: {
+    border: "1px solid green"
+  }
+}
+
+
+
+
+
+
+

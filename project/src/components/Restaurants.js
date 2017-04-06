@@ -4,22 +4,23 @@ import { ref } from '../config/constants'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import AddRemoveButton from './AddRemoveButton'
 import Favorites from './Favorites'
+import RestaurantInfo from './RestaurantInfo'
 
 
 function RestaurantList(props) {
-  const restaurants = props.restaurantItems;
-  const restaurantItems = restaurants.map((restaurant) =>
+  const items = props.items;
+  const allItems = items.map((item) =>
     <li>
-      <img src={restaurant.image_url} />  
-      <a href={restaurant.url}><h2>{restaurant.name}</h2></a>
-      <span>{restaurant.rating}</span>
-      <span>{restaurant.review_count}</span>
-      <span>{restaurant.price}</span>
-      <AddRemoveButton restaurant={restaurant} />
+      <img src={item.image_url} />  
+      <a href={item.url}><h2>{item.name}</h2></a>
+      <span>{item.rating}</span>
+      <span>{item.review_count}</span>
+      <span>{item.price}</span>
+      <AddRemoveButton restaurant={item} />
     </li>
   );
   return (
-    <ul>{restaurantItems}</ul>
+    <ul>{allItems}</ul>
   )
 }
 
@@ -85,8 +86,8 @@ export default class Restaurants extends Component {
           <Tab>Favorites</Tab>
         </TabList>
         <TabPanel>
-          { this.state.isLoading ? <div className="loader-container"><div className="loader"></div><p>Loading restaurants near you</p></div> : null }
-          <RestaurantList restaurantItems={this.state.restaurants} />
+          { this.state.isLoading && <div className="loader-container"><div className="loader"></div><p>Loading restaurants near you</p></div> }
+          <RestaurantInfo items={this.state.restaurants} />
           {
             this.state.geolocationError &&
             <div className="alert alert-danger" role="alert">

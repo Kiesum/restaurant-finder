@@ -3,6 +3,7 @@ import firebase from 'firebase'
 import { auth, ref } from '../config/constants'
 import RemoveButton from './RemoveButton'
 import AddRemoveButton from './AddRemoveButton'
+import RestaurantInfo from './RestaurantInfo'
 
 function FavoritesList(props) {
   const favorites =  props.favorites;
@@ -50,7 +51,8 @@ export default class Restaurants extends Component {
   render () {
     return (
       <div>
-        <FavoritesList favorites={ this.state.favorites} />
+      {this.state.favorites.length > 0 ? <RestaurantInfo items={ this.state.favorites} /> : <p>You have no favorite restaurants :(</p>
+      }
       </div>
     )
   }

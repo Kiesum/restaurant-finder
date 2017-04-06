@@ -8,7 +8,8 @@ import Home from './components/Home'
 import { logout } from './helpers/auth'
 import { firebaseAuth } from './config/constants'
 import Profile from './components/Profile'
-import './App.css';
+import './App.css'
+import { DropdownButton, MenuItem } from 'react-bootstrap'
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -59,24 +60,24 @@ export default class App extends Component {
     return this.state.loading === true ? <h1>Loading</h1> : (
       <BrowserRouter>
         <div>
-          <nav className="navbar navbar-default navbar-static-top">
+          <nav style={styles.nav}>
             <div className="container">
-              <div className="navbar-header">
-                <Link to="/" className="navbar-brand">Restaurant Finder</Link>
+              <div>
+                <Link to="/" style={styles.logo} className="navbar-brand">Restaurant Finder</Link>
               </div>
-              <ul className="nav navbar-nav pull-right">
-                <li>
-                  <Link to="/" className="navbar-brand">Home</Link>
-                </li>
+              <ul style={styles.rightNav}>
                 <li>
                   {this.state.authed
-                    ? <span><button
-                        style={{border: 'none', background: 'transparent'}}
-                        onClick={() => {
-                          logout()
-                        }}
-                        className="navbar-brand">Logout</button>
-                        <Profile /></span>
+                    ? <div>
+                         <DropdownButton style={styles.dropDown} title="K" noCaret id="bg-vertical-dropdown-2">
+                            <Profile />
+                            <button
+                              style={styles.logoutButton}
+                              onClick={() => {
+                                logout()
+                              }} >Logout</button>
+                          </DropdownButton>
+                      </div>
                     : <span>
                         <Link to="/login" className="navbar-brand">Login</Link>
                         <Link to="/register" className="navbar-brand">Register</Link>
@@ -86,17 +87,57 @@ export default class App extends Component {
             </div>
           </nav>
           <div className="container">
-            <div className="row">
               <Switch>
                 <PrivateRoute authed={this.state.authed} path='/' exact component={Home} />
                 <PublicRoute authed={this.state.authed} path='/login' component={Login} />
                 <PublicRoute authed={this.state.authed} path='/register' component={Register} />
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
-            </div>
           </div>
         </div>
       </BrowserRouter>
     );
   }
 }
+
+const styles = {
+  nav: {
+    backgroundColor: "#f1f1f1",
+    marginBottom: "30px"
+  },
+  logo: {
+    color: "#4485f5",
+    fontSize: "20px",
+    paddingLeft: "0",
+    fontWeight: "bold"
+  },
+  dropDown: {
+    backgroundColor: "#4485f5",
+    borderRadius: "50%",
+    border: "none",
+    width: "35px",
+    height: "35px",
+    color: "#FFFFFF"
+  },
+  logoutButton: {
+    background: "#d54937",
+    border: "none",
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    padding: "3px 20px",
+    borderRadius: "2px"
+  },
+  rightNav: {
+    display: "flex",
+    alignItems: "center",
+    height: "50px",
+    listStyle: "none",
+    padding: "0",
+    margin: "0",
+    float: "right"
+  }
+}
+
+
+
+
