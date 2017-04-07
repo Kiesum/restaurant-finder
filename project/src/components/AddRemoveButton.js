@@ -36,44 +36,48 @@ export default class AddRemoveButton extends Component {
     }.bind(this));
   }
 
-  addRemove() {
-    var user = firebase.auth().currentUser;
-    if (user && this.state.addRemoveButton === 'Add to favorites') {
-      console.log(this.state)
-      var favoritesRef = ref.child('users').child(user.uid).child('info').child('favorites');
-      var newFavoritesRef = favoritesRef.push({
-        name: this.state.name,
-        image_url: this.state.image_url,
-        url: this.state.url,
-        price: this.state.price,
-        review_count: this.state.review_count,
-        rating: this.state.rating,
-        display_phone: this.state.display_phone
-      }, function(err) {
-          console.log(err)
-      }).then(function() {
-        this.setState({ addRemoveButton: 'Remove from favorites' })
-        this.getKey()
-      }.bind(this));
-
+  handleAddRemove() {
+    if (this.state.addRemoveButton === 'Add to favorites') {
+      this.handleAdd();
     } else if (this.state.addRemoveButton === 'Remove from favorites') {
-        var user = firebase.auth().currentUser.uid;
-        console.log(this.state)
-        var adaRef = firebase.database().ref('/users/' + user + '/info/favorites/' + this.state.key);
-        adaRef.remove()
-      .then(function() {
-        this.setState({ addRemoveButton: 'Add to favorites' })
-        console.log("Remove succeeded.")
-      }.bind(this))
-      .catch(function(error) {
-        console.log("Remove failed: " + error.message)
-      });
+      this.handleRemove();
     }
+  }
+
+  handleAdd() {
+    var user = firebase.auth().currentUser;
+    var favoritesRef = ref.child('users').child(user.uid).child('info').child('favorites');
+    var newFavoritesRef = favoritesRef.push({
+      name: this.state.name,
+      image_url: this.state.image_url,
+      url: this.state.url,
+      price: this.state.price,
+      review_count: this.state.review_count,
+      rating: this.state.rating,
+      display_phone: this.state.display_phone
+    }, function(err) {
+        console.log(err)
+    }).then(function() {
+      this.setState({ addRemoveButton: 'Remove from favorites' })
+    }.bind(this));
+  }
+
+  handleRemove() {
+    var user = firebase.auth().currentUser.uid;
+    var restaurantRef = firebase.database().ref('/users/' + user + '/info/favorites/' + this.state.key);
+    restaurantRef.remove()
+    .then(function() {
+      this.setState({ addRemoveButton: 'Add to favorites' })
+      console.log("Remove succeeded.")
+    }.bind(this))
+    .catch(function(error) {
+      console.log("Remove failed: " + error.message)
+    });
   }
 
   render () {
     return (
-      <input key={this.state.key} style={styles.button} type="button" onClick={(e) => this.addRemove(e)} value={this.state.addRemoveButton}></input>
+      <input key={this.state.key} style={styles.button} type="button" onClick={(e) => this.handleAddRemove(e)} value={this.state.addRemoveButton}></input>
     )
   }
 }

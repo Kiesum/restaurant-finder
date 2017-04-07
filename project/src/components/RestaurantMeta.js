@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col } from 'react-bootstrap'
-import Radium from 'radium'
 import firebase from 'firebase'
-import { auth, ref } from '../config/constants'
 
 export default class RestaurantMeta extends Component {
   constructor(props) {

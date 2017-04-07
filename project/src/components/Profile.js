@@ -6,8 +6,8 @@ export default class Profile extends Component {
     super(props) 
 
     this.state = {
-      profile_url: '',
-      displayName: ''
+      profile_url: this.props.profile_url,
+      displayName: this.props.displayName
     }
   }
    

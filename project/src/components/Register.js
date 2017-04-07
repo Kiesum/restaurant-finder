@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { auth, saveUser } from '../helpers/auth'
 import firebase from 'firebase'
 
-
 function setErrorMsg(error) {
   return {
     registerError: error.message
@@ -10,12 +9,47 @@ function setErrorMsg(error) {
 }
 
 export default class Register extends Component {
-  state = { registerError: null }
+  state = { registerError: null,
+              avatar: '',
+              isUploading: false,
+              progress: 0,
+              avatarURL: '',
+              myFileName: "",
+              myFileHandle: {}
+            }
+  
   handleSubmit(e) {
     e.preventDefault()
     if (this.cpw.value === this.pw.value) {
-      auth(this.email.value, this.pw.value, this.name.value)
-        .catch(e => this.setState(setErrorMsg(e)))
+      var uploadTask = firebase.storage().ref('images').child(this.state.myFileName).put(this.state.myFileHandle)
+        console.log(this.state.myFileHandle)
+
+        uploadTask.on('state_changed', function(snapshot){
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running');
+              break;
+          }
+        }, function(error) {
+          // Handle unsuccessful uploads
+          console.log(error)
+          alert(error)
+        }, function() {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          var downloadURL = uploadTask.snapshot.downloadURL;
+          this.setState({avatarURL: downloadURL})
+          auth(this.email.value, this.pw.value, this.name.value, downloadURL, this.state.myFileName )
+              .catch(e => 
+                this.setState(setErrorMsg(e)))
+        }.bind(this))
     } else {
       this.setState(setErrorMsg({ message: 'Passwords do not match.' }));
     }
@@ -44,6 +78,14 @@ export default class Register extends Component {
     });
   }
 
+  handleChange(event) {
+    // console.log("handleChange() fileName = " + event.target.files[0].name);
+    // console.log("handleChange() file handle = " + event.target.files[0]);
+    this.setState( {myFileName: event.target.files[0].name} );
+    this.setState( {myFileHandle: event.target.files[0]} );
+  }
+
+
   render () {
     return (
       <div className="col-sm-6 col-sm-offset-3">
@@ -66,6 +108,7 @@ export default class Register extends Component {
             <label>Confirm Password</label>
             <input type="password" className="form-control" placeholder="Confirm Password" ref={(cpw) => this.cpw = cpw} />
           </div>
+          <input type="file" onChange={this.handleChange.bind(this)} id="profilePhotoFileUpload" />
           {
             this.state.registerError &&
             <div className="alert alert-danger" role="alert">

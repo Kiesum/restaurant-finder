@@ -9,8 +9,8 @@ export default class RemoveFavorite extends Component {
 
   handleRemove() {
     var user = firebase.auth().currentUser.uid;
-    var adaRef = firebase.database().ref('/users/' + user + '/info/favorites/' + this.props.key_id);
-    adaRef.remove()
+    var restaurantRef = firebase.database().ref('/users/' + user + '/info/favorites/' + this.props.key_id);
+    restaurantRef.remove()
   }
 
   render () {
