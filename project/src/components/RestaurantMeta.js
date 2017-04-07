@@ -1,29 +1,23 @@
 import React, { Component } from 'react'
-import RemoveFavorite from './RemoveFavorite'
 import { Row, Col } from 'react-bootstrap'
 import Radium from 'radium'
 import firebase from 'firebase'
 import { auth, ref } from '../config/constants'
-import RestaurantMeta from './RestaurantMeta'
 
-export default class Restaurant extends Component {
+export default class RestaurantMeta extends Component {
   constructor(props) {
     super(props)
   }
 
   render() {
     return (
-      <div> 
-        <Row className="restaurant-row">
-          <li className="list-item">
-            <Col style={styles.col} xs={12} md={4}><img style={styles.image} src={this.props.info.image_url} /></Col> 
-            <Col xs={10} xsOffset={1} mdOffset={0} md={8} className="info-container" > 
-              <RestaurantMeta info={this.props.info} />
-              <RemoveFavorite key={this.props.info.id} key_id={this.props.info.id} />
-            </Col>
-          </li>
-        </Row>
-      </div>
+      <span> 
+        <a href={this.props.info.url}><h2 style={styles.name}>{this.props.info.name}</h2></a>
+        <a href={'tel:' + this.props.info.display_phone.replace(/\s/g, "-")}>{this.props.info.display_phone}</a>
+        <div style={styles.text}>Rating: {this.props.info.rating}</div>
+        <div style={styles.text} >Number of Reviews: {this.props.info.review_count}</div>
+        <div style={styles.text} >{this.props.info.price}</div>
+      </span>
     )
   }
 }

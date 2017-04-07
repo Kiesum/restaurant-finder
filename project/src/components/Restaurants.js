@@ -69,7 +69,7 @@ export default class Restaurants extends Component {
         </TabList>
         <TabPanel>
           { this.state.isLoading && <div className="loader-container"><div className="loader"></div><p>Loading restaurants near you</p></div> }
-          <RestaurantInfo items={this.state.restaurants} />
+          <RestaurantInfo items={this.state.restaurants} addRemoveButton="Add to Favorites" />
           {
             this.state.geolocationError &&
             <div className="alert alert-danger" role="alert">

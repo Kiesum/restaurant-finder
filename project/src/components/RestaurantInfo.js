@@ -2,36 +2,35 @@ import React, { Component } from 'react'
 import AddRemoveButton from './AddRemoveButton'
 import { Row, Col } from 'react-bootstrap'
 import Radium from 'radium'
+import firebase from 'firebase'
+import { auth, ref } from '../config/constants'
+import RestaurantMeta from './RestaurantMeta'
 
+class RestaurantInfo extends React.Component {
+  constructor(props) {
+    super(props)
+  }
 
-function RestaurantInfo(props) {
-  const items = props.items;
-  const allItems = items.map((item, i) =>
-    <Row style={styles.row} >
-      <li style={styles.listItem} key={i}>
-        <Col style={styles.col} xs={12} md={4}><img style={styles.image} src={item.image_url} /></Col> 
-        <Col xs={10} xsOffset={1} mdOffset={0} md={8} style={styles.infoContainer} >  
-          <a href={item.url}><h2 style={styles.name}>{item.name}</h2></a>
-          <div style={styles.text}>Rating: {item.rating}</div>
-          <div style={styles.text} >Number of Reviews: {item.review_count}</div>
-          <div style={styles.text} >{item.price}</div>
-          <AddRemoveButton restaurant={item} />
-        </Col>
-      </li>
-    </Row>
-  );
+  render() {
+    const items = this.props.items;
+    const allItems = items.map((item, i) =>
+      <Row className="restaurant-row" key={i}>
+        <li className="list-item">
+          <Col style={styles.col} xs={12} md={4}><img style={styles.image} src={item.image_url} /></Col> 
+          <Col xs={10} xsOffset={1} mdOffset={0} md={8} className="info-container" > 
+            <RestaurantMeta info={item} />
+            <AddRemoveButton restaurant={item} />
+          </Col>
+        </li>
+      </Row>
+    );
   return (
       <ul style={styles.list} >{allItems}</ul>
-  )
+    )
+  }
 }
 
 const styles = {
-  row: {
-    margin: "0",
-    background: "#F8F8F8",
-    borderBottom: "1px solid rgb(210, 210, 210)",
-    borderTop: "1px solid rgb(210, 210, 210)"
-  },
   col: {
     padding: "0"
   },
@@ -43,9 +42,6 @@ const styles = {
     listStyle: "none",
     padding: "0",
   },
-  listItem: {
-    marginBottom: "0"
-  },
   infoContainer: {
     display: "inline-block",
     textAlign: "center",
@@ -54,10 +50,10 @@ const styles = {
     position: "relative",
     top: "-30px",
     border: "1px solid rgb(210, 210, 210)",
-    
-    '@media screen and (min-width: 100px)': {
-        display: 'none'
-    }
+
+    ':hover': {
+      background: "grey"
+    },
   },
   name: {
     color: "#000000",

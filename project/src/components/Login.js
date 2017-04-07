@@ -49,7 +49,7 @@ export default class Login extends Component {
     return (
       <div className="col-sm-6 col-sm-offset-3">
         <h1> Login </h1>
-        <button onClick={this.handleSignIn.bind(this)}>facebook</button>
+        <button className="loginBtn loginBtn-facebook" onClick={this.handleSignIn.bind(this)}>Login with Facebook</button>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label>Email</label>

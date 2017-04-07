@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
 import { auth, ref } from '../config/constants'
-import RemoveButton from './RemoveButton'
 import AddRemoveButton from './AddRemoveButton'
 import RestaurantInfo from './RestaurantInfo'
+import RestaurantInfoSample from './RestaurantInfoSample'
 
 export default class Restaurants extends Component {
 
   constructor(props) {
-      super(props)
-      
-      this.state = { favorites: [] }
+    super(props)
+    
+    this.state = { favorites: [] }
   }
 
   componentDidMount() {
@@ -36,8 +36,7 @@ export default class Restaurants extends Component {
   render () {
     return (
       <div>
-      {this.state.favorites.length > 0 ? <RestaurantInfo items={ this.state.favorites} /> : <p>You have no favorite restaurants :(</p>
-      }
+      {this.state.favorites.length > 0 ? <RestaurantInfoSample items={this.state.favorites} /> : <p>You have no favorite restaurants :(</p>}
       </div>
     )
   }

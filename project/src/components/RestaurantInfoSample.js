@@ -1,29 +1,25 @@
 import React, { Component } from 'react'
-import RemoveFavorite from './RemoveFavorite'
+import AddRemoveButton from './AddRemoveButton'
 import { Row, Col } from 'react-bootstrap'
 import Radium from 'radium'
 import firebase from 'firebase'
 import { auth, ref } from '../config/constants'
-import RestaurantMeta from './RestaurantMeta'
+import Restaurant from './Restaurant'
 
-export default class Restaurant extends Component {
+class RestaurantInfoSample extends React.Component {
   constructor(props) {
     super(props)
   }
 
   render() {
-    return (
-      <div> 
-        <Row className="restaurant-row">
-          <li className="list-item">
-            <Col style={styles.col} xs={12} md={4}><img style={styles.image} src={this.props.info.image_url} /></Col> 
-            <Col xs={10} xsOffset={1} mdOffset={0} md={8} className="info-container" > 
-              <RestaurantMeta info={this.props.info} />
-              <RemoveFavorite key={this.props.info.id} key_id={this.props.info.id} />
-            </Col>
-          </li>
-        </Row>
+    const items = this.props.items;
+    const allItems = items.map((item, i) =>
+      <div key={i}>
+        <Restaurant info={item} />
       </div>
+    );
+  return (
+      <ul style={styles.list} >{allItems}</ul>
     )
   }
 }
@@ -61,3 +57,5 @@ const styles = {
     padding: "5px 0"
   }
 }
+
+module.exports = RestaurantInfoSample;
