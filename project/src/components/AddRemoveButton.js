@@ -15,12 +15,13 @@ export default class AddRemoveButton extends Component {
       price: props.restaurant.price,
       review_count: props.restaurant.review_count,
       rating: props.restaurant.rating,
-      display_phone: props.restaurant.display_phone
+      display_phone: props.restaurant.display_phone,
     }
 
   }
 
   componentDidMount () {
+    console.log(this.props)
     this.getKey();
   }
 
@@ -54,16 +55,21 @@ export default class AddRemoveButton extends Component {
       price: this.state.price,
       review_count: this.state.review_count,
       rating: this.state.rating,
-      display_phone: this.state.display_phone
+      display_phone: this.state.display_phone,
+      latitude: this.props.restaurant.coordinates.latitude,
+      longitude: this.props.restaurant.coordinates.longitude,
+      display_address: this.props.restaurant.location.display_address
     }, function(err) {
         console.log(err)
     }).then(function() {
       this.setState({ addRemoveButton: 'Remove from favorites' })
+      this.getKey()
     }.bind(this));
   }
 
   handleRemove() {
     var user = firebase.auth().currentUser.uid;
+    console.log(this.state.key)
     var restaurantRef = firebase.database().ref('/users/' + user + '/info/favorites/' + this.state.key);
     restaurantRef.remove()
     .then(function() {
@@ -77,18 +83,11 @@ export default class AddRemoveButton extends Component {
 
   render () {
     return (
-      <input key={this.state.key} style={styles.button} type="button" onClick={(e) => this.handleAddRemove(e)} value={this.state.addRemoveButton}></input>
+      <input key={this.state.key} className="secondary-btn" type="button" onClick={(e) => this.handleAddRemove(e)} value={this.state.addRemoveButton}></input>
     )
   }
 }
 
-const styles = {
-  button: {
-    border: "1px solid rgb(210, 210, 210)",
-    background: "#FFFFFF",
-    padding: "10px 20px"
-  }
-}
 
 
 

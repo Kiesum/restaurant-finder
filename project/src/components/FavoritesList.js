@@ -3,10 +3,9 @@
 // import { Row, Col } from 'react-bootstrap'
 // import firebase from 'firebase'
 // import { auth, ref } from '../config/constants'
-// import RestaurantMeta from './RestaurantMeta'
-// import RestaurantDetails from './RestaurantDetails'
+// import Favorite from './Favorite'
 
-// class RestaurantInfo extends React.Component {
+// class FavoritesList extends React.Component {
 //   constructor(props) {
 //     super(props)
 //   }
@@ -14,19 +13,9 @@
 //   render() {
 //     const items = this.props.items;
 //     const allItems = items.map((item, i) =>
-//       <Row className="restaurant-row" key={i}>
-//         <li className="list-item">
-//           <Col style={styles.col} xs={12} md={4}>
-//             <img style={styles.image} src={item.image_url} />
-//           </Col> 
-//           <Col xs={10} xsOffset={1} mdOffset={0} md={4} className="info-container" > 
-//             <div>
-//               <RestaurantMeta info={item} />
-//               <AddRemoveButton restaurant={item} />
-//             </div>
-//           </Col>
-//         </li>
-//       </Row>
+//       <div key={i}>
+//         <Favorite info={item} />
+//       </div>
 //     );
 //   return (
 //       <ul style={styles.list} >{allItems}</ul>
@@ -40,9 +29,7 @@
 //   },
 //   image: {
 //     width: "100%",
-//     padding: "0",
-//     height: "325px",
-//     objectFit: "cover"
+//     padding: "0"
 //   },
 //   list: {
 //     listStyle: "none",
@@ -70,4 +57,4 @@
 //   }
 // }
 
-// module.exports = RestaurantInfo;
+// module.exports = FavoritesList;

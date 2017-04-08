@@ -1,14 +1,24 @@
 import React, { Component } from 'react'
-import RemoveFavorite from './RemoveFavorite'
+import AddRemoveButton from './AddRemoveButton'
 import { Row, Col } from 'react-bootstrap'
-import Radium from 'radium'
 import firebase from 'firebase'
 import { auth, ref } from '../config/constants'
 import RestaurantMeta from './RestaurantMeta'
+import RestaurantDetails from './RestaurantDetails'
+import ToggleMap from './ToggleMap'
+import RemoveFavorite from './RemoveFavorite'
 
 export default class Restaurant extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      detailsVisible: false
+    }
+  }
+
+  toggleDetails() {
+    this.setState({ detailsVisible: !this.state.detailsVisible });
   }
 
   render() {
@@ -17,10 +27,21 @@ export default class Restaurant extends Component {
         <Row className="restaurant-row">
           <li className="list-item">
             <Col style={styles.col} xs={12} md={4}><img style={styles.image} src={this.props.info.image_url} /></Col> 
-            <Col xs={10} xsOffset={1} mdOffset={0} md={8} className="info-container" > 
-              <RestaurantMeta info={this.props.info} />
-              <RemoveFavorite key={this.props.info.id} key_id={this.props.info.id} />
+            <Col xs={10} xsOffset={1} mdOffset={0} md={4} className="info-container" > 
+              <div style={styles.infoContainer}>
+                <RestaurantMeta info={this.props.info} />
+                { this.props.favorites === "true" ?
+                  <RemoveFavorite key={this.props.info.id} key_id={this.props.info.id} /> :
+                  <AddRemoveButton restaurant={this.props.info} />
+                }
+                <button className="secondary-btn" onClick={this.toggleDetails.bind(this)}>Toggle map</button>
+              </div>
             </Col>
+              { this.state.detailsVisible && 
+                <Col md={12} style={styles.col}>
+                  <RestaurantDetails address={this.props.info.location.display_address} latitude={this.props.info.coordinates.latitude} longitude={this.props.info.coordinates.longitude} />
+                </Col>
+              }
           </li>
         </Row>
       </div>
@@ -34,24 +55,17 @@ const styles = {
   },
   image: {
     width: "100%",
-    padding: "0"
+    padding: "0",
+    height: "325px",
+    objectFit: "cover"
   },
   list: {
     listStyle: "none",
     padding: "0",
   },
   infoContainer: {
-    display: "inline-block",
-    textAlign: "center",
-    padding: "30px",
-    background: "#FFFFFF",
-    position: "relative",
-    top: "-30px",
-    border: "1px solid rgb(210, 210, 210)",
-
-    ':hover': {
-      background: "grey"
-    },
+    margin: "auto",
+    width: "75%"
   },
   name: {
     color: "#000000",

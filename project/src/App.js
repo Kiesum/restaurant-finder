@@ -7,6 +7,7 @@ import Register from './components/Register'
 import { logout } from './helpers/auth'
 import { firebaseAuth } from './config/constants'
 import Profile from './components/Profile'
+import RestaurantDetails from './components/RestaurantDetails'
 import './App.css'
 import { DropdownButton, MenuItem, Grid, Row } from 'react-bootstrap'
 
@@ -75,11 +76,13 @@ export default class App extends Component {
                     ? <div>
                          <DropdownButton style={styles.dropDown} title={ this.state.displayName ? this.state.displayName.charAt(0) : 'T'} noCaret id="bg-vertical-dropdown-2">
                             <Profile profile_url={this.state.profile_url} displayName={this.state.displayName} />
-                            <button
+                            <div style={styles.logoutContainer}>
+                              <button
                               style={styles.logoutButton}
                               onClick={() => {
                                 logout()
                               }} >Logout</button>
+                            </div>
                           </DropdownButton>
                       </div>
                     : <span>
@@ -95,6 +98,7 @@ export default class App extends Component {
               <PrivateRoute authed={this.state.authed} path='/' exact component={Restaurants} />
               <PublicRoute authed={this.state.authed} path='/login' component={Login} />
               <PublicRoute authed={this.state.authed} path='/register' component={Register} />
+              <PrivateRoute authed={this.state.authed} path='/details' component={RestaurantDetails} />
               <Route render={() => <h3>No Match</h3>} />
             </Switch>
           </div>
@@ -121,10 +125,17 @@ const styles = {
   dropDown: {
     backgroundColor: "#4485f5",
     borderRadius: "50%",
+    padding: "0",
     border: "none",
     width: "35px",
     height: "35px",
-    color: "#FFFFFF"
+    color: "#FFFFFF",
+    textTransform: "uppercase"
+  },
+  logoutContainer: {
+    padding: "10px",
+    textAlign: "center",
+    background: "#f8f8f8"
   },
   logoutButton: {
     background: "#d54937",

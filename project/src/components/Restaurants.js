@@ -5,6 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import AddRemoveButton from './AddRemoveButton'
 import Favorites from './Favorites'
 import RestaurantInfo from './RestaurantInfo'
+import RestaurantList from './RestaurantList'
 
 function setErrorMsg(error) {
   return {
@@ -69,7 +70,7 @@ export default class Restaurants extends Component {
         </TabList>
         <TabPanel>
           { this.state.isLoading && <div className="loader-container"><div className="loader"></div><p>Loading restaurants near you</p></div> }
-          <RestaurantInfo items={this.state.restaurants} addRemoveButton="Add to Favorites" />
+          <RestaurantList items={this.state.restaurants} />
           {
             this.state.geolocationError &&
             <div className="alert alert-danger" role="alert">

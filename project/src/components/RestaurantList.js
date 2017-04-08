@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
 import AddRemoveButton from './AddRemoveButton'
 import { Row, Col } from 'react-bootstrap'
-import Radium from 'radium'
 import firebase from 'firebase'
 import { auth, ref } from '../config/constants'
 import Restaurant from './Restaurant'
 
-class RestaurantInfoSample extends React.Component {
+class RestaurantsList extends React.Component {
   constructor(props) {
     super(props)
   }
 
   render() {
+    console.log(this.props)
     const items = this.props.items;
     const allItems = items.map((item, i) =>
       <div key={i}>
-        <Restaurant info={item} />
+        <Restaurant info={item} favorites={this.props.favorites} />
       </div>
     );
   return (
@@ -58,4 +58,4 @@ const styles = {
   }
 }
 
-module.exports = RestaurantInfoSample;
+module.exports = RestaurantsList;

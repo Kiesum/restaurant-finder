@@ -11,8 +11,10 @@ export default class RestaurantMeta extends Component {
       <span> 
         <a href={this.props.info.url}><h2 style={styles.name}>{this.props.info.name}</h2></a>
         <a href={'tel:' + this.props.info.display_phone.replace(/\s/g, "-")}>{this.props.info.display_phone}</a>
-        <div style={styles.text}>Rating: {this.props.info.rating}</div>
-        <div style={styles.text} >Number of Reviews: {this.props.info.review_count}</div>
+        <div>  
+          <span style={styles.review}>{this.props.info.rating}</span>
+          <span style={styles.text} >({this.props.info.review_count} reviews)</span>
+        </div>
         <div style={styles.text} >{this.props.info.price}</div>
       </span>
     )
@@ -46,9 +48,16 @@ const styles = {
   },
   name: {
     color: "#000000",
-    marginTop: "0"
+    marginTop: "0",
+    fontWeight: "300"
   },
   text: {
-    padding: "5px 0"
+    padding: "5px 0",
+    fontWeight: "300"
+  },
+  review: {
+    fontSize: "20px",
+    marginRight: "5px",
+    fontWeight: "300"
   }
 }

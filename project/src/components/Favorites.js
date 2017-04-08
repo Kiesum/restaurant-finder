@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
 import { auth, ref } from '../config/constants'
-import AddRemoveButton from './AddRemoveButton'
-import RestaurantInfo from './RestaurantInfo'
-import RestaurantInfoSample from './RestaurantInfoSample'
+import FavoritesList from './FavoritesList'
+import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom'
+import RestaurantList from './RestaurantList'
 
 export default class Restaurants extends Component {
 
@@ -36,8 +36,16 @@ export default class Restaurants extends Component {
   render () {
     return (
       <div>
-      {this.state.favorites.length > 0 ? <RestaurantInfoSample items={this.state.favorites} /> : <p>You have no favorite restaurants :(</p>}
+      {this.state.favorites.length > 0 ? <RestaurantList items={this.state.favorites} favorites="true" /> : <p style={styles.noFavorites}>You have no favorite restaurants :(</p>}
       </div>
     )
+  }
+}
+
+const styles = {
+  noFavorites: {
+    textAlign: "center",
+    marginTop: "30px",
+    fontSize: "16px",
   }
 }

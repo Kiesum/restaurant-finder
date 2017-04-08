@@ -19,24 +19,42 @@ export default class Profile extends Component {
 
   render () {
     return (
-      <span>
+      <div style={styles.container}>
         <img style={styles.img} src={this.state.profile_url} />
         <span style={styles.name} >{this.state.displayName}</span>
-      </span>
+      </div>
     )
   }
 }
 
 const styles={
+  container: {
+    display: "flex",
+    padding: "10px",
+    height: "75px",
+    boxSizing: "content-box",
+    alignItems: "center"
+  },
   img: {
-    width: "50px",
-    padding: "0.5rem"
+    position: "absolute",
+    width: "75px",
+    height: "75px",
+    borderRadius: "50%",
+    objectFit: "cover"
   },
   name: {
-    display: "inline-block",
-    width: "100px",
-    marginLeft: "1rem",
+    display: "-webkit-box",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    wordBreak: "break-word",
+    marginLeft: "90px",
     verticalAlign: "middle",
-    fontSize: "12px"
+    fontSize: "14px",
+    fontWeight: "bold",
+    WebkitBoxOrient: "vertical",
+    WebkitLineClamp: "3",
+    lineHeight: "20px",
+    maxHeight: "60px"
   }
 }
+
