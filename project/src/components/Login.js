@@ -52,12 +52,12 @@ export default class Login extends Component {
         <button className="loginBtn loginBtn-facebook" onClick={this.handleSignIn.bind(this)}>Login with Facebook</button>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
-            <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
+            <label htmlFor="email">Email</label>
+            <input className="form-control" id="email" ref={(email) => this.email = email} placeholder="Email"/>
           </div>
           <div className="form-group">
-            <label>Password</label>
-            <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
           </div>
           {
             this.state.loginMessage &&

@@ -168,9 +168,17 @@ ul.dropdown-menu {
 /* buttons */
 
 .secondary-btn {
+  display: block;
+  margin: 10px 0;
   padding: 10px 15px;
   background: white;
   border: 1px solid #d2d2d2;
+}
+
+@media (max-width: 991px) {
+  .secondary-btn {
+    margin: 10px auto;
+  }
 }
 
 /* Map markers */
@@ -203,6 +211,28 @@ ul.dropdown-menu {
   }
 }
 
+#register-avatar {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+#image-upload {
+  display: block;
+}
+
+#image-upload input[type="file"] {
+  display: none;
+}
+
+#image-upload > span {
+  display: inline-block;
+  width: 150px;
+  padding: 10px 0;
+  text-align: center;
+  margin: 15px 0;
+  border: 1px solid #d2d2d2;
+}
 
 
 

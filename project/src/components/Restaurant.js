@@ -5,7 +5,6 @@ import firebase from 'firebase'
 import { auth, ref } from '../config/constants'
 import RestaurantMeta from './RestaurantMeta'
 import RestaurantDetails from './RestaurantDetails'
-import ToggleMap from './ToggleMap'
 import RemoveFavorite from './RemoveFavorite'
 
 export default class Restaurant extends Component {
@@ -22,6 +21,7 @@ export default class Restaurant extends Component {
   }
 
   render() {
+    console.log(this.porops)
     return (
       <div> 
         <Row className="restaurant-row">
@@ -30,7 +30,7 @@ export default class Restaurant extends Component {
             <Col xs={10} xsOffset={1} mdOffset={0} md={4} className="info-container" > 
               <div style={styles.infoContainer}>
                 <RestaurantMeta info={this.props.info} />
-                { this.props.favorites === "true" ?
+                { this.props.favorites ?
                   <RemoveFavorite key={this.props.info.id} key_id={this.props.info.id} /> :
                   <AddRemoveButton restaurant={this.props.info} />
                 }
@@ -39,7 +39,10 @@ export default class Restaurant extends Component {
             </Col>
               { this.state.detailsVisible && 
                 <Col md={12} style={styles.col}>
+                { this.props.favorites ?
+                  <RestaurantDetails address={this.props.info.display_address} latitude={this.props.info.latitude} longitude={this.props.info.longitude} /> :
                   <RestaurantDetails address={this.props.info.location.display_address} latitude={this.props.info.coordinates.latitude} longitude={this.props.info.coordinates.longitude} />
+                }
                 </Col>
               }
           </li>

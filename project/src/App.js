@@ -74,7 +74,7 @@ export default class App extends Component {
                 <li>
                   {this.state.authed
                     ? <div>
-                         <DropdownButton style={styles.dropDown} title={ this.state.displayName ? this.state.displayName.charAt(0) : 'T'} noCaret id="bg-vertical-dropdown-2">
+                         <DropdownButton style={styles.dropDown} title={ this.state.displayName ? this.state.displayName.charAt(0) : ''} noCaret id="bg-vertical-dropdown-2">
                             <Profile profile_url={this.state.profile_url} displayName={this.state.displayName} />
                             <div style={styles.logoutContainer}>
                               <button

@@ -19,11 +19,12 @@ export default class Register extends Component {
             }
   
   handleSubmit(e) {
+    var self = this;
     e.preventDefault()
     if (this.cpw.value === this.pw.value) {
-      var uploadTask = firebase.storage().ref('images').child(this.state.myFileName).put(this.state.myFileHandle)
-        console.log(this.state.myFileHandle)
 
+      if (this.state.myFileName) {
+        var uploadTask = firebase.storage().ref('images').child(this.state.myFileName).put(this.state.myFileHandle)
         uploadTask.on('state_changed', function(snapshot){
           // Observe state change events such as progress, pause, and resume
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
@@ -40,16 +41,26 @@ export default class Register extends Component {
         }, function(error) {
           // Handle unsuccessful uploads
           console.log(error)
-          alert(error)
+          this.setState(setErrorMsg(error))
         }, function() {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           var downloadURL = uploadTask.snapshot.downloadURL;
           this.setState({avatarURL: downloadURL})
           auth(this.email.value, this.pw.value, this.name.value, downloadURL, this.state.myFileName )
-              .catch(e => 
-                this.setState(setErrorMsg(e)))
+              .catch(function(e) {
+                self.setState(setErrorMsg(e))
+                const imageRef = firebase.storage().ref('images').child(self.state.myFileName);
+                imageRef.delete().then(function() {
+                  console.log('deleted')
+                });
+              })
         }.bind(this))
+
+      } else {
+        this.setState(setErrorMsg({ message: 'Please upload an image' }))
+      }
+
     } else {
       this.setState(setErrorMsg({ message: 'Passwords do not match.' }));
     }
@@ -79,10 +90,14 @@ export default class Register extends Component {
   }
 
   handleChange(event) {
-    // console.log("handleChange() fileName = " + event.target.files[0].name);
-    // console.log("handleChange() file handle = " + event.target.files[0]);
     this.setState( {myFileName: event.target.files[0].name} );
     this.setState( {myFileHandle: event.target.files[0]} );
+    var reader = new FileReader();
+    reader.onload = function(){
+      var output = document.getElementById('register-avatar');
+      output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
   }
 
 
@@ -93,22 +108,25 @@ export default class Register extends Component {
         <button className="loginBtn loginBtn-facebook" onClick={this.handleSignIn.bind(this)}>Register with Facebook</button>
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
-            <label>Name</label>
-            <input className="form-control" ref={(name) => this.name = name} placeholder="Name"/>
+            <label htmlFor="name">Name</label>
+            <input className="form-control" id="name" ref={(name) => this.name = name} placeholder="Name"/>
           </div>
           <div className="form-group">
-            <label>Email</label>
-            <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
+            <label htmlFor="email">Email</label>
+            <input className="form-control" id="email" ref={(email) => this.email = email} placeholder="Email"/>
           </div>
           <div className="form-group">
-            <label>Password</label>
-            <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
           </div>
           <div className="form-group">
-            <label>Confirm Password</label>
-            <input type="password" className="form-control" placeholder="Confirm Password" ref={(cpw) => this.cpw = cpw} />
+            <label htmlFor="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" className="form-control" placeholder="Confirm Password" ref={(cpw) => this.cpw = cpw} />
           </div>
-          <input type="file" onChange={this.handleChange.bind(this)} id="profilePhotoFileUpload" />
+          <img src="http://www.gravatar.com/avatar/?d=mm" id="register-avatar" />
+          <label id="image-upload"><span>Upload an image</span>
+            <input type="file" onChange={this.handleChange.bind(this)} id="profilePhotoFileUpload" />
+          </label>
           {
             this.state.registerError &&
             <div className="alert alert-danger" role="alert">

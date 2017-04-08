@@ -5,23 +5,14 @@ export function auth (email, pw, displayName, avatar, fileName) {
   var displayName = displayName;
   var fileName = fileName;
   return firebaseAuth().createUserWithEmailAndPassword(email, pw)
-    .catch(function(error) {
-      console.log(error)
-      alert(error.message)
-      var imageRef = firebase.storage().ref('images').child(fileName);
-      imageRef.delete().then(function() {
-        console.log('deleted')
-      }).catch(function(error) {
-        console.log(error)
-      });
-    })
     .then(function(user){
       user.updateProfile({
         displayName: displayName,
         photoURL: avatar
-    })
+      })
     window.location = '/';
-  }).then(saveUser)
+    })
+    .then(saveUser)
 }
 
 export function logout () {
