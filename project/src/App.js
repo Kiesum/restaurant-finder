@@ -78,7 +78,7 @@ export default class App extends Component {
                             <Profile profile_url={this.state.profile_url} displayName={this.state.displayName} />
                             <div style={styles.logoutContainer}>
                               <button
-                              style={styles.logoutButton}
+                              className="primary-btn"
                               onClick={() => {
                                 logout()
                               }} >Logout</button>
@@ -136,14 +136,6 @@ const styles = {
     padding: "10px",
     textAlign: "center",
     background: "#f8f8f8"
-  },
-  logoutButton: {
-    background: "#d54937",
-    border: "none",
-    color: "#FFFFFF",
-    fontWeight: "bold",
-    padding: "3px 20px",
-    borderRadius: "2px"
   },
   rightNav: {
     display: "flex",

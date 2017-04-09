@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
 import { auth, ref } from '../config/constants'
-import FavoritesList from './FavoritesList'
 import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom'
 import RestaurantList from './RestaurantList'
 
 export default class Restaurants extends Component {
-
   constructor(props) {
     super(props)
     
@@ -30,7 +28,6 @@ export default class Restaurants extends Component {
       favoritesArray.push(favorites[key]);
     }
     this.setState({ favorites: favoritesArray })
-    console.log(favoritesArray)
   }
 
   render () {

@@ -9,19 +9,11 @@ export default class AddRemoveButton extends Component {
     this.state = {
       addRemoveButton: 'Add to favorites',
       key: props.key_id,
-      name: props.restaurant.name,
-      image_url: props.restaurant.image_url,
-      url: props.restaurant.url,
-      price: props.restaurant.price,
-      review_count: props.restaurant.review_count,
-      rating: props.restaurant.rating,
-      display_phone: props.restaurant.display_phone,
     }
 
   }
 
   componentDidMount () {
-    console.log(this.props)
     this.getKey();
   }
 
@@ -29,7 +21,7 @@ export default class AddRemoveButton extends Component {
     var user = firebase.auth().currentUser.uid;
     firebase.database().ref('/users/' + user + '/info/favorites/').once('value').then(function(snapshot) {
       for (var key in snapshot.val()) {
-        if (snapshot.val()[key]['name'] === this.state.name ) {
+        if (snapshot.val()[key]['name'] === this.props.restaurant.name ) {
           this.setState({ key: key })
           this.setState({ addRemoveButton: 'Remove from favorites' })
         }
@@ -49,17 +41,17 @@ export default class AddRemoveButton extends Component {
     var user = firebase.auth().currentUser;
     var favoritesRef = ref.child('users').child(user.uid).child('info').child('favorites');
     var newFavoritesRef = favoritesRef.push({
-      name: this.state.name,
-      image_url: this.state.image_url,
-      url: this.state.url,
-      price: this.state.price,
-      review_count: this.state.review_count,
-      rating: this.state.rating,
-      display_phone: this.state.display_phone,
+      name: this.props.restaurant.name,
+      image_url: this.props.restaurant.image_url,
+      url: this.props.restaurant.url,
+      price: this.props.restaurant.price,
+      review_count: this.props.restaurant.review_count,
+      rating: this.props.restaurant.rating,
+      display_phone: this.props.restaurant.display_phone,
       latitude: this.props.restaurant.coordinates.latitude,
       longitude: this.props.restaurant.coordinates.longitude,
       display_address: this.props.restaurant.location.display_address
-    }, function(err) {
+    }).catch(function(err) {
         console.log(err)
     }).then(function() {
       this.setState({ addRemoveButton: 'Remove from favorites' })
@@ -69,21 +61,20 @@ export default class AddRemoveButton extends Component {
 
   handleRemove() {
     var user = firebase.auth().currentUser.uid;
-    console.log(this.state.key)
     var restaurantRef = firebase.database().ref('/users/' + user + '/info/favorites/' + this.state.key);
     restaurantRef.remove()
     .then(function() {
-      this.setState({ addRemoveButton: 'Add to favorites' })
-      console.log("Remove succeeded.")
+      this.setState({ addRemoveButton: 'Add to favorites' });
+      console.log("Remove succeeded.");
     }.bind(this))
     .catch(function(error) {
-      console.log("Remove failed: " + error.message)
+      console.log("Remove failed: " + error.message);
     });
   }
 
   render () {
     return (
-      <input key={this.state.key} className="secondary-btn" type="button" onClick={(e) => this.handleAddRemove(e)} value={this.state.addRemoveButton}></input>
+      <input key={this.state.key} className="btn secondary-btn" type="button" onClick={(e) => this.handleAddRemove(e)} value={this.state.addRemoveButton}></input>
     )
   }
 }

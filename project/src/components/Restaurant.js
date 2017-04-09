@@ -12,16 +12,22 @@ export default class Restaurant extends Component {
     super(props)
 
     this.state = {
-      detailsVisible: false
+      detailsVisible: false,
+      mapButtonText: "Show map"
     }
   }
 
   toggleDetails() {
-    this.setState({ detailsVisible: !this.state.detailsVisible });
+    if (this.state.detailsVisible) {
+      this.setState({ detailsVisible: !this.state.detailsVisible });
+      this.setState({ mapButtonText: "Show map" })
+    } else {
+      this.setState({ detailsVisible: !this.state.detailsVisible });
+      this.setState({ mapButtonText: "Hide map" })
+    }
   }
 
   render() {
-    console.log(this.porops)
     return (
       <div> 
         <Row className="restaurant-row">
@@ -34,11 +40,11 @@ export default class Restaurant extends Component {
                   <RemoveFavorite key={this.props.info.id} key_id={this.props.info.id} /> :
                   <AddRemoveButton restaurant={this.props.info} />
                 }
-                <button className="secondary-btn" onClick={this.toggleDetails.bind(this)}>Toggle map</button>
+                <button className="btn secondary-btn" onClick={this.toggleDetails.bind(this)}>{this.state.mapButtonText}</button>
               </div>
             </Col>
               { this.state.detailsVisible && 
-                <Col md={12} style={styles.col}>
+                <Col md={8} style={styles.col}>
                 { this.props.favorites ?
                   <RestaurantDetails address={this.props.info.display_address} latitude={this.props.info.latitude} longitude={this.props.info.longitude} /> :
                   <RestaurantDetails address={this.props.info.location.display_address} latitude={this.props.info.coordinates.latitude} longitude={this.props.info.coordinates.longitude} />

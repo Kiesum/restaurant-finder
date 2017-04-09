@@ -124,7 +124,7 @@ export default class Register extends Component {
             <input type="password" id="confirm-password" className="form-control" placeholder="Confirm Password" ref={(cpw) => this.cpw = cpw} />
           </div>
           <img src="http://www.gravatar.com/avatar/?d=mm" id="register-avatar" />
-          <label id="image-upload"><span>Upload an image</span>
+          <label id="image-upload" className="secondary-btn">Upload an image
             <input type="file" onChange={this.handleChange.bind(this)} id="profilePhotoFileUpload" />
           </label>
           {
@@ -135,7 +135,7 @@ export default class Register extends Component {
               &nbsp;{this.state.registerError}
             </div>
           }
-          <button type="submit" className="btn btn-primary">Register</button>
+          <button type="submit" className="primary-btn register-btn">Register</button>
         </form>
       </div>
     )

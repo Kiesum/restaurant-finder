@@ -4,7 +4,6 @@ import { ref } from '../config/constants'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import AddRemoveButton from './AddRemoveButton'
 import Favorites from './Favorites'
-import RestaurantInfo from './RestaurantInfo'
 import RestaurantList from './RestaurantList'
 
 function setErrorMsg(error) {

@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import firebase from 'firebase'
 
 export default class RestaurantMeta extends Component {
-  constructor(props) {
-    super(props)
-  }
-
+  
   render() {
     return (
       <span> 
