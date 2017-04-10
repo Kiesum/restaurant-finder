@@ -17,9 +17,11 @@ export default class Restaurants extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { restaurants: [],
-                    isLoading: true,
-                    geolocationError: null }
+    this.state = { 
+      restaurants: [],
+      isLoading: true,
+      geolocationError: null 
+    }
   }
   
   componentDidMount() {

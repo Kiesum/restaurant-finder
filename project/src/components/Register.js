@@ -9,14 +9,15 @@ function setErrorMsg(error) {
 }
 
 export default class Register extends Component {
-  state = { registerError: null,
-              avatar: '',
-              isUploading: false,
-              progress: 0,
-              avatarURL: '',
-              myFileName: "",
-              myFileHandle: {}
-            }
+  state = { 
+    registerError: null,
+    avatar: '',
+    isUploading: false,
+    progress: 0,
+    avatarURL: '',
+    myFileName: "",
+    myFileHandle: {}
+  }
   
   handleSubmit(e) {
     var self = this;
